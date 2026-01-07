@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Analysis Result</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Light green background for the entire page */
+        body {
+            background-color: #f0fff0; /* Honeydew light green */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        /* Text stays to the side */
+        .text-content {
+            flex: 1;
+            min-width: 300px;
+            text-align: left;
+        }
+
+        /* Graph alignment to the center of the screen */
+        .graph-content {
+            flex: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chart-container {
+            width: 400px;
+            height: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        h1 { border-bottom: 2px solid #c2eabd; padding-bottom: 10px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; font-size: 1.1em; }
+        
+        .status-box {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="text-content">
+            <h1>Food Analysis</h1>
+            <p><strong>Food Item:</strong> {{ food }}</p>
+
+            <div class="status-box">
+                Status: <span style="color: {{ color }};">{{ status }}</span>
+            </div>
+
+            <h3>Health Score: {{ score }}%</h3>
+
+            <hr style="border: 1px solid #c2eabd; margin: 20px 0;">
+
+            <h2>Nutritional Values</h2>
+            <ul>
+                <li><strong>Calories:</strong> {{ calories }}</li>
+                <li><strong>Protein:</strong> {{ protein }}g ({{ protein_level }})</li>
+                <li><strong>Carbs:</strong> {{ carbs }}g ({{ carbs_level }})</li>
+                <li><strong>Fat:</strong> {{ fat }}g ({{ fat_level }})</li>
+                <li><strong>Sugar:</strong> {{ sugar }}g ({{ sugar_level }})</li>
+                <li><strong>Fiber:</strong> {{ fiber }}g</li>
+            </ul>
+
+            <h2>Health Risks</h2>
+            {% if diseases %}
+                <ul>
+                    {% for d in diseases %}
+                        <li>⚠️ {{ d }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No major health risks found! 👍</p>
+            {% endif %}
+
+            <a href="/" class="back-btn">← Go Back</a>
+        </div>
+
+        <div class="graph-content">
+            <div class="chart-container">
+                <canvas id="nutritionChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('nutritionChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Protein', 'Carbs', 'Fat'],
+                datasets: [{
+                    data: [{{ protein }}, {{ carbs }}, {{ fat }}],
+                    backgroundColor: [
+                        '#42a5f5', // Protein Blue
+                        '#66bb6a', // Carbs Green
+                        '#ffa726'  // Fat Orange
+                    ],
+                    borderWidth: 5,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, font: { size: 14 } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
