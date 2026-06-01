@@ -35,7 +35,7 @@ The AI-Based Nutrition & Health Analyzer is a full-stack web application designe
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/epmubashira325-bot/AI-Food-Nutrition-Analyzer/tree/main
+git clone : https://github.com/epmubashira325-bot/AI-Food-Nutrition-Analyzer
 
 ### Navigate to Project Folder
 
